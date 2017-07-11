@@ -1,0 +1,63 @@
+<div class='row'>
+  <div class='small-6 columns'>
+    <h1><%= @player.name %>'s Games(<%= @player.games.count %>)</h1>
+  </div>
+</div>
+<div class='row'>
+  <div class='small-4 columns'>
+    <h3>White Games</h3>
+    <% @player.participations.where(color: 'White').map(&:game).group_by(&:opening).sort_by{|_o, games| games.count}.reverse.each do |opening, games| %>
+      <% won = games.select{|x| x.player_id == @player.id }.count %>
+      <% loss =  games.select{|x| x.player_id != @player.id && !x.player_id.nil? }.count %>
+      <% draw = games.select{|x| x.player_id.nil? }.count %>
+      <p>
+      <em><%= ((won.to_f / games.count) * 100).round(2) %>%</em>
+      <strong><%= opening %></strong>
+        Won:
+        <%= won %>
+        Lost:
+        <%= loss %>
+        Draw:
+        <%= draw %>
+      </p>
+    <% end %>
+  </div>
+  <div class='small-4 columns'>
+    <h3>Black Games</h3>
+    <% @player.participations.where(color: 'Black').map(&:game).group_by(&:opening).sort_by{|_o, games| games.count}.reverse.each do |opening, games| %>
+      <% won = games.select{|x| x.player_id == @player.id }.count %>
+      <% loss =  games.select{|x| x.player_id != @player.id && !x.player_id.nil? }.count %>
+      <% draw = games.select{|x| x.player_id.nil? }.count %>
+      <p>
+      <em><%= ((won.to_f / games.count) * 100).round(2) %>%</em>
+      <strong><%= opening %></strong>
+        Won:
+        <%= won %>
+        Lost:
+        <%= loss %>
+        Draw:
+        <%= draw %>
+      </p>
+    <% end %>
+  </div>
+  <div class='small-4 columns'>
+    <h3>Games Per Opponent</h3>
+    <% @player.games.group_by{|x| x.participations.where('player_id != ?', @player.id).first.player.name}.sort_by{|_x, games| games.count }.reverse.each do |opponent, games| %>
+      <% won = games.select{|x| x.player_id == @player.id }.count %>
+      <% loss =  games.select{|x| x.player_id != @player.id && !x.player_id.nil? }.count %>
+      <% draw = games.select{|x| x.player_id.nil? }.count %>
+      <p>
+      <em><%= ((won.to_f / games.count) * 100).round(2) %>%</em>
+      <strong><%= opponent %></strong> - Won: <%= won %>, Loss: <%= loss %>, Draw: <%= draw %>
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<% @player.games.each do |game| %>
+  <p>
+    <%= game.opening %>
+    <%= game.date_played %>
+    <%= game.result %>
+  </p>
+<% end %>

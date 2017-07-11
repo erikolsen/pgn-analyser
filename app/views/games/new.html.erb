@@ -1,0 +1,22 @@
+<div class='row'>
+  <div class='small-12 columns'>
+    <h1>Add a game</h1>
+  </div>
+</div>
+<div class='row'>
+  <div class='small-6 columns'>
+    <%= form_for @game do |f| %>
+      <p>Paste Games in PGN format</p>
+      <%= f.text_area :pgn, rows: '20' %>
+      <%= f.submit 'Submit', name: 'pgn', class: 'button expanded' %>
+    <% end %>
+  </div>
+  <div class='small-6 columns'>
+    <p>Or Upload PGN</p>
+    <%= form_tag({controller: "games", action: "create"}, multipart: true) do %>
+      <%= label_tag :file %>
+      <%= file_field_tag :file %>
+      <%= submit_tag 'Upload File', class: 'button' %>
+    <% end %>
+  </div>
+</div>

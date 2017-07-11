@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title><%= content_for?(:title) ? yield(:title) : "Chess PGN Parser" %></title>
+
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "application", 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body>
+    <div class="title-bar" data-responsive-toggle="responsive-menu">
+    <div class="title-bar-title"><%=link_to 'Chess PGN Parser', players_path %></div>
+      <div class='title-bar-right'>
+        <ul class='menu'>
+          <li><%= link_to "All Players", players_path %></li>
+          <li><%= link_to "Add Games", new_game_path %></li>
+        </ul>
+      </div>
+    </div>
+
+    <%= yield %>
+
+  </body>
+</html>
